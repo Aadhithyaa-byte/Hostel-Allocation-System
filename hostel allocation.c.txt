@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STUDENTS MAX_ROOMS*CAPACITY
+#define MAX_ROOMS    20
+#define CAPACITY     2
+typedef struct {
+    char name[50];
+    int  rollNo;
+    int  roomNo;
+} Student;
+
+int main(void) {
+    int n, i, j, roomIdx = 0, occupants = 0;
+    Student students[MAX_STUDENTS];
+
+    scanf("%d", &n);
+    printf("Enter number of students (max %d): %d", MAX_STUDENTS,n);
+    if (n > MAX_STUDENTS) n = MAX_STUDENTS;
+
+
+    for (i = 0; i < n; ++i) {
+        scanf("%s", students[i].name);
+        printf("\nStudent %d name    : %s ", i + 1, students[i].name);
+        scanf("%d", &students[i].rollNo);
+        printf("\nStudent %d roll no : %d ", i + 1,students[i].rollNo);
+        students[i].roomNo = -1;
+    }
+
+
+    for (i = 0; i < n; ++i) {
+        if (roomIdx >= MAX_ROOMS) {
+            printf("\nNo more rooms available!\n");
+            break;
+        }
+        students[i].roomNo = roomIdx + 1;
+        occupants++;
+
+
+        if (occupants == CAPACITY) {
+            occupants = 0;
+            roomIdx++;
+        }
+    }
+
+
+    printf("\n--- Allocation Result ---\n");
+    for (i = 0; i < n; ++i) {
+        if (students[i].roomNo != -1)
+            printf(" (Name: %s) ; (Roll No: %d) =>> Room: %d\n",
+                   students[i].name, students[i].rollNo,
+                   students[i].roomNo);
+        else
+            printf("(Name: %s) ; (Roll No: %d) =>> Not allocated\n",
+                   students[i].name, students[i].rollNo);
+    }
+return 0;
+}
